@@ -21,9 +21,9 @@ function App() {
   return (
 
    <Routes>
-            {/* <Route path="/login" element={<Login />} /> */}
-          <Route path='/' element={<Layout /> }
-            // element={user ? <Layout /> : <Navigate to="/login"/>}
+            <Route path="/login" element={<Login />} />
+          <Route 
+            element={user ? <Layout /> : <Navigate to="/login"/>}
             >          
             <Route path="/" element={<Home />} />
             <Route path="/clients" element={<Clients />} />
