@@ -26,8 +26,8 @@ const Home = () => {
       keyword: keyword,
     };
     dispatch(fetchProducts(params));
-    if(data !== "No result")
-    dispatch(fetchClientDetails(data));
+    // if(data !== "No result")
+    // dispatch(fetchClientDetails(data));
 
   }, [dispatch, page, keyword, data]);
 

@@ -181,7 +181,7 @@ const Order = () => {
                 <p>Sub Total</p>
               </div>
               <div className="md:text-xl w-1/2 text-2xl font-bold">
-                <p>: </p>
+                <p>: {order?.totalPrice - order?.taxPrice} </p>
               </div>
             </div>
             <div className="flex  mx-6">
