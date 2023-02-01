@@ -26,19 +26,17 @@ const Home = () => {
       keyword: keyword,
     };
     dispatch(fetchProducts(params));
-    if (scanning) {
-      dispatch(fetchClientDetails(data));
-      setScanning(false);
-    }
   }, [dispatch, page, keyword]);
 
-  // const handleScan = (data) => {
-  //   if (data) {
-  //     setData(data);
-  //     dispatch(fetchClientDetails(data));
-  //     setScanning(false);
-  //   }
-  // };
+  const handleScan = (data) => {
+    if (data) {
+      setData(data);
+      dispatch(fetchClientDetails(data));
+      setScanning(false);
+    } else if (!!error) {
+      console.info(error);
+    }
+  };
 
   const resteClientHandler = () => {
     dispatch(resetClient());
@@ -53,16 +51,10 @@ const Home = () => {
       {scanning ? (
         <>
           <QrReader
-            onResult={(result, error) => {
-              if (!!result) {
-                setData(result?.text);
-              }
-
-              if (!!error) {
-                console.info(error);
-              }
-            }}
+            onResult={handleScan}
             style={{ width: "100%" }}
+            facingMode="environment"
+            showViewFinder={true}
           />
         </>
       ) : (
@@ -119,7 +111,7 @@ const Home = () => {
               <ul className="inline-flex">
                 <li>
                   <button
-                    disabled={page === 0} 
+                    disabled={page === 0}
                     className="px-4 py-2 text-sky-600 transition-colors duration-150 bg-white border border-r-0 border-sky-600 rounded-l-lg focus:shadow-outline hover:bg-sky-100 disabled:opacity-50"
                     onClick={() => setPage(page - 1)}
                   >
@@ -128,14 +120,17 @@ const Home = () => {
                 </li>
                 {Array.from({ length: products.pages }, (_, i) => (
                   <li key={i}>
-                    <button onClick={()=> setPage(i)}  className="px-4 py-2 text-sky-600 transition-colors duration-150 bg-white border border-r-0 border-sky-600 focus:shadow-outline ">
+                    <button
+                      onClick={() => setPage(i)}
+                      className="px-4 py-2 text-sky-600 transition-colors duration-150 bg-white border border-r-0 border-sky-600 focus:shadow-outline "
+                    >
                       {i + 1}
                     </button>
                   </li>
                 ))}
                 <li>
                   <button
-                    disabled={page === products.pages-1} 
+                    disabled={page === products.pages - 1}
                     className="px-4 py-2 text-sky-600 transition-colors duration-150 bg-white border border-sky-600 rounded-r-lg focus:shadow-outline hover:bg-sky-100 disabled:opacity-50"
                     onClick={() => setPage(page + 1)}
                   >
