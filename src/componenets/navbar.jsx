@@ -65,7 +65,7 @@ const Navbar = () => {
                     to={`/client/${client._id}`}
                   >
                     <HiUserAdd className="text-3xl mr-1" />
-                    {client.name}
+                    {client?.name}
                   </Link>
                 ) : (
                   <div className="px-3 py-2 flex items-center text-4xl uppercase font-bold leading-snug text-white hover:opacity-75">
