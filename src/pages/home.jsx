@@ -26,12 +26,14 @@ const Home = () => {
       keyword: keyword,
     };
     dispatch(fetchProducts(params));
-  }, [dispatch, page, keyword]);
+    if(data !== "No result")
+    dispatch(fetchClientDetails(data));
 
-  const handleScan = (data, error) => {
+  }, [dispatch, page, keyword, data]);
+
+  const handleScan = (data) => {
     if (data) {
-      setData(data);
-      dispatch(fetchClientDetails(data));
+      setData(data);      
       setScanning(false);
     } else if (error) {
       console.info(error);
@@ -52,14 +54,15 @@ const Home = () => {
         <>
           <QrReader
             onResult={handleScan}
-            onError={error => console.info(error)}
+            // onError={error => console.info(error)}
             style={{ width: "100%" }}
-            facingMode="environment"
+            constraints={ {facingMode: 'environment'} }
             showViewFinder={true}
-          />
+           />
         </>
       ) : (
         <div className="flex flex-col items-center justify-center">
+          <h2>{data}</h2>
           <div className="w-full flex justify-between">
             <div className="mx-3 my-3">
               <button
@@ -149,16 +152,3 @@ const Home = () => {
 
 export default Home;
 
-{
-  /* <div className="bg-white p-4 flex items-center flex-wrap">
-  <nav aria-label="Page navigation">
-	<ul class="inline-flex">    
-	  <li><button class="px-4 py-2 text-green-600 transition-colors duration-150 bg-white border border-r-0 border-green-600 rounded-l-lg focus:shadow-outline hover:bg-green-100" onClick={() => setPage(page-1)}>Prev</button></li>
-    {Array.from({ length: pages }, (_, i) => (
-      <li key={i}><button class="px-4 py-2 text-green-600 transition-colors duration-150 bg-white border border-r-0 border-green-600 focus:shadow-outline">{i + 1}</button></li>
-    ))}	
-	  <li><button class="px-4 py-2 text-green-600 transition-colors duration-150 bg-white border border-green-600 rounded-r-lg focus:shadow-outline hover:bg-green-100" onClick={() => setPage(page+1)}>Next</button></li>
-	</ul>
-  </nav>
-</div> */
-}
