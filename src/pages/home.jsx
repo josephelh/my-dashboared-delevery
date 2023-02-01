@@ -28,12 +28,12 @@ const Home = () => {
     dispatch(fetchProducts(params));
   }, [dispatch, page, keyword]);
 
-  const handleScan = (data) => {
+  const handleScan = (data, error) => {
     if (data) {
       setData(data);
       dispatch(fetchClientDetails(data));
       setScanning(false);
-    } else if (!!error) {
+    } else if (error) {
       console.info(error);
     }
   };
@@ -52,6 +52,7 @@ const Home = () => {
         <>
           <QrReader
             onResult={handleScan}
+            onError={error => console.info(error)}
             style={{ width: "100%" }}
             facingMode="environment"
             showViewFinder={true}
