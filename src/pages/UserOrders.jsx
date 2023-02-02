@@ -29,7 +29,7 @@ const UserOrders = () => {
   return (
     <div>
         {userOrdersList.length === 0 && !loading ? (
-            <div className="py-3 mb-6"> No Orders Found For This Client</div>
+            <div className="py-3 mb-6"> You have not made any orders</div>
         ): (
              <table className="w-full mb-9">
              <thead className="border-b bg-green-300 border-gray-500">

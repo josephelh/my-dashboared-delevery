@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Loader from "../componenets/Loader";
 import Message from "../componenets/Message";
 import {
@@ -9,11 +9,12 @@ import {
   orderIsDelivered,
 } from "../slices/orderSlice";
 import { fetchClientDetails } from "../slices/clientSlice";
-import { resetOrder } from "../slices/orderSlice";
+import { resetOrder , deleteOrder} from "../slices/orderSlice";
 
 const Order = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { error, loading, order } = useSelector((state) => state.orders);
   const client  = useSelector((state) => state.clients.client);
   const date = new Date(order?.createdAt);
@@ -50,14 +51,13 @@ const Order = () => {
     
   }, [dispatch, id,client, order]);
 
+  const deleteHandler = (id) => {
+    if (window.confirm("ete vous sur?")) {
+      dispatch(deleteOrder(id));
+      navigate(-1);
+    }
+  };
 
-  // useEffect(()=> {
-  //   if(!client || order.client._id !== client._id) {
-  //     setClientId(order.client._id);
-  //     dispatch(fetchClientDetails(clientId));
-  //   }
-
-  // },[dispatch,clientId])
 
 
   useEffect(()=> {
@@ -210,6 +210,15 @@ const Order = () => {
               className="inline-flex justify-center rounded-md border bg-green-600 border-transparent py-3 px-5 text-2xl font-medium text-white shadow-sm hover:green-700 focus:outline-none focus:ring-2  focus:ring-offset-2 disabled:opacity-50"
             >
               Mark as Delivered
+            </button>
+          </div>
+          <div className="mx-3 my-3">
+            <button
+              onClick={() => deleteHandler(order._id)}
+              type="button"
+              className="inline-flex justify-center rounded-md border bg-red-600 border-transparent py-3 px-5 text-2xl font-medium text-white shadow-sm hover:green-700 focus:outline-none focus:ring-2  focus:ring-offset-2 "
+            >
+              Delete
             </button>
           </div>
         </div>
