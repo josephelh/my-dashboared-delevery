@@ -89,32 +89,49 @@ export const orderIsDelivered = createAsyncThunk(
 
 export const clientOrders = createAsyncThunk(
   "orders/clientOrders",
-  async (id, thunkAPI) => {
+  async (params, thunkAPI) => {
     const { userLogin } = thunkAPI.getState().user;
     const { token } = userLogin;
+
+    const {page, pageSize ,id} = params;
+
 
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
       },
+      params: {
+        id,
+        page,
+        pageSize,        
+      }
     };
-    const response = await axios.get(`${baseUrl}/orders/client/${id}`, config);
+    const response = await axios.get(`${baseUrl}/orders/client`, config);
     return response.data;
   }
 );
 
 export const userOrders = createAsyncThunk(
   "orders/userOrders",
-  async (_, thunkAPI) => {
+  async (params, thunkAPI) => {
     const { userLogin } = thunkAPI.getState().user;
-    const { token } = userLogin;
+    const { token ,_id} = userLogin;
+
+
+    const {page, pageSize } = params;
+
 
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
       },
+      params: {
+        id: _id,
+        page,
+        pageSize,        
+      }
     };
-    const response = await axios.get(`${baseUrl}/orders/myorders`,config);
+    const response = await axios.get(`${baseUrl}/orders/user`,config);
     return response.data;
   }
 );
@@ -135,25 +152,7 @@ export const createOrder = createAsyncThunk(
   }
 );
 
-export const updateOrder = createAsyncThunk(
-  "orders/updateOrder",
-  async (order, thunkAPI) => {
-    const { userLogin } = thunkAPI.getState().user;
-    const { token } = userLogin;
 
-    const config = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    };
-    const response = await axios.patch(
-      `${baseUrl}/orders/${order._id}`,
-      order,
-      config
-    );
-    return response.data;
-  }
-);
 
 export const deleteOrder = createAsyncThunk(
   "orders/deleteOrder",
@@ -260,27 +259,12 @@ const orderSlice = createSlice({
       })
       .addCase(createOrder.fulfilled, (state, action) => {
         state.loading = false;
-        state.orders.push(action.payload);
         state.order =action.payload;
       })
       .addCase(createOrder.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
-      })
-      .addCase(updateOrder.pending, (state) => {
-        state.loading = true;
-      })
-      .addCase(updateOrder.fulfilled, (state, action) => {
-        state.loading = false;
-        const updatedOrder = action.payload;
-        state.orders = state.orders.map((order) =>
-          order._id === updatedOrder._id ? updatedOrder : order
-        );
-      })
-      .addCase(updateOrder.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.error.message;
-      })
+      })     
       .addCase(deleteOrder.pending, (state) => {
         state.loading = true;
       })
@@ -307,10 +291,7 @@ export const {
   fetchOrderError,
   createOrderStart,
   createOrderSuccess,
-  createOrderError,
-  updateOrderStart,
-  updateOrderSuccess,
-  updateOrderError,
+  createOrderError, 
   deleteOrderStart,
   deleteOrderSuccess,
   deleteOrderError,

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import Loader from "../componenets/Loader";
@@ -173,7 +173,7 @@ const Order = () => {
                 <p>Tax Price</p>
               </div>
               <div className="md:text-xl w-1/2 text-2xl font-bold">
-                <p>: {order?.taxPrice}</p>
+                <p>: {order?.taxPrice.toFixed(2)} $</p>
               </div>
             </div>
             <div className="flex mx-6 mb-4">
@@ -181,7 +181,7 @@ const Order = () => {
                 <p>Sub Total</p>
               </div>
               <div className="md:text-xl w-1/2 text-2xl font-bold">
-                <p>: {order?.totalPrice - order?.taxPrice} </p>
+                <p>: {(order?.totalPrice - order?.taxPrice).toFixed(2)} $</p>
               </div>
             </div>
             <div className="flex  mx-6">
@@ -189,34 +189,34 @@ const Order = () => {
                 <p>Total </p>
               </div>
               <div className="md:text-xl w-1/2 text-2xl font-bold">
-                <p>: {order?.totalPrice}$</p>
+                <p>: {(order?.totalPrice.toFixed(2))}$</p>
               </div>
             </div>
           </div>
-          <div className="mx-3 my-3 text-2xl font-bold">
+          <div className="w-full px-4 mx-3 my-3 text-2xl font-bold">
             <button
               disabled={order?.isPaid}
               onClick={() => handelIsPaid(order._id)}
-              className="inline-flex justify-center rounded-md border border-transparent bg-green-600 py-3 px-5 text-2xl font-medium text-white shadow-sm hover:green-700 focus:outline-none focus:ring-2  focus:ring-offset-2 disabled:opacity-50"
+              className="w-full inline-flex justify-center rounded-md border border-transparent bg-green-600 py-3 px-5 text-2xl font-medium text-white shadow-sm hover:green-700 focus:outline-none focus:ring-2  focus:ring-offset-2 disabled:opacity-50"
             >
               Mark as Paid
             </button>
           </div>
-          <div className="mx-3 my-3">
+          <div className="w-full px-4 mx-3 my-3">
             <button
               onClick={() => handelIsDeleverd(order._id)}
               type="button"
               disabled={order?.isDelivered}
-              className="inline-flex justify-center rounded-md border bg-green-600 border-transparent py-3 px-5 text-2xl font-medium text-white shadow-sm hover:green-700 focus:outline-none focus:ring-2  focus:ring-offset-2 disabled:opacity-50"
+              className="w-full inline-flex justify-center rounded-md border bg-green-600 border-transparent py-3 px-5 text-2xl font-medium text-white shadow-sm hover:green-700 focus:outline-none focus:ring-2  focus:ring-offset-2 disabled:opacity-50"
             >
               Mark as Delivered
             </button>
           </div>
-          <div className="mx-3 my-3">
+          <div className="w-full px-4 mx-3 my-3">
             <button
               onClick={() => deleteHandler(order._id)}
               type="button"
-              className="inline-flex justify-center rounded-md border bg-red-600 border-transparent py-3 px-5 text-2xl font-medium text-white shadow-sm hover:green-700 focus:outline-none focus:ring-2  focus:ring-offset-2 "
+              className="w-full inline-flex justify-center rounded-md border bg-red-600 border-transparent py-3 px-5 text-2xl font-medium text-white shadow-sm hover:green-700 focus:outline-none focus:ring-2  focus:ring-offset-2 "
             >
               Delete
             </button>

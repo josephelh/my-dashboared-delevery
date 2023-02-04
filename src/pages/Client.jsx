@@ -7,6 +7,7 @@ import { fetchClientDetails, updateClient } from "../slices/clientSlice";
 import { clientOrders } from "../slices/orderSlice";
 import { HiXCircle, HiCheckCircle } from "react-icons/hi";
 
+
 const Client = () => {
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");
@@ -14,6 +15,8 @@ const Client = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [pageSize, setPageSize] = useState(16);
+  const [page, setPage] = useState(0);
 
   const { loading, error, client } = useSelector((state) => state.clients);
   const {
@@ -23,17 +26,22 @@ const Client = () => {
   } = useSelector((state) => state.orders);
 
   useEffect(() => {
+    const params = {
+      id:id,
+      page: page,
+      pageSize: pageSize,
+    };
     if (!client || client._id !== id) {
       dispatch(fetchClientDetails(id));
-      dispatch(clientOrders(id));
+      dispatch(clientOrders(params));
     } else {
       setName(client.name);
       setAddress(client.address);
       setPhone(client.phone);
-      dispatch(clientOrders(id));
+      dispatch(clientOrders(params));
 
     }
-  }, [dispatch, id,client]);
+  }, [dispatch, id,client, page, pageSize]);
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -162,11 +170,11 @@ const Client = () => {
             </form>
           </div>
         </div>
-        <div className=" flex items-center justify-center flex-initial w-3/12 bg-white">
-        <div className="mx-3 my-3">
+        <div className=" flex justify-center flex-initial w-3/12 bg-white">
+        <div className="w-full px-3 mx-3 my-3">
             <button
               onClick={() => orderForClientHandler()}
-              className="inline-flex justify-center rounded-md border border-transparent bg-green-600 py-3 px-5 text-2xl font-medium text-white shadow-sm hover:green-700 focus:outline-none focus:ring-2  focus:ring-offset-2"
+              className="w-full inline-flex justify-center rounded-md border border-transparent bg-blue-800 py-3 px-5 text-2xl font-medium text-white shadow-sm hover:green-700 focus:outline-none focus:ring-2  focus:ring-offset-2"
             >
              Order
             </button>
@@ -177,38 +185,40 @@ const Client = () => {
         <h3 className="text-xl font-extrabold text-blue-900 pb-9">
           Client Orders List
         </h3>
-        {orders.length === 0 && !loading ? (
+        {ordersLoading ? <Loader/> : null }
+        {ordersError ? <Message>{error}</Message>: null}
+        {orders.orders?.length === 0 && !loading ? (
             <div className="py-3 mb-6"> No Orders Found For This Client</div>
         ): (
              <table className="w-full mb-9">
-             <thead className="border-b bg-green-300 border-gray-500">
+             <thead className="border-b bg-blue-900 border-gray-500">
                <tr>
-                 <th className="text-md font-bold uppercase text-gray-900 px-3 py-4 text-left border-r-2 border-gray-300">
+                 <th className="text-md font-bold uppercase text-white px-3 py-4 text-left border-r-2 border-gray-300">
                    Oredr Items
                  </th>
    
                  <th
                    scope="col"
-                   className="text-md font-bold uppercase  text-gray-900 px-3 py-4 text-left border-r-2 border-gray-300"
+                   className="text-md font-bold uppercase  text-white px-3 py-4 text-left border-r-2 border-gray-300"
                  >
                    Delivered
                  </th>
                  <th
                    scope="col"
-                   className="text-md font-bold uppercase  text-gray-900 px-3 py-4 text-left border-r-2 border-gray-300"
+                   className="text-md font-bold uppercase  text-white px-3 py-4 text-left border-r-2 border-gray-300"
                  >
                    Paid
                  </th>
                  <th
                    scope="col"
-                   className="text-md font-bold uppercase text-gray-900 px-3 py-4 text-left border-r-2 border-gray-300"
+                   className="text-md font-bold uppercase text-white px-3 py-4 text-left border-r-2 border-gray-300"
                  >
                    Created At
                  </th>
                </tr>
              </thead>
              <tbody>
-               {orders?.map((order) => {
+               {orders.orders?.map((order) => {
                  return (
                    <tr
                      className="border-b bg-indigo-100 border-indigo-200"
@@ -249,6 +259,40 @@ const Client = () => {
              </tbody>
            </table>
         )}
+        <div className="bg-white p-4 flex items-center flex-wrap text-sm font-bold">
+            <nav>
+              <ul className="inline-flex">
+                <li>
+                  <button
+                    disabled={page === 0}
+                    className="px-4 py-2 text-blue-900 transition-colors duration-150 bg-white border border-r-0 border-blue-900 rounded-l-lg focus:shadow-outline hover:bg-sky-100 disabled:opacity-50"
+                    onClick={() => setPage(page - 1)}
+                  >
+                    Prev
+                  </button>
+                </li>
+                {Array.from({ length: orders?.pages }, (_, i) => (
+                  <li key={i}>
+                    <button
+                      onClick={() => setPage(i)}
+                      className="px-4 py-2 text-blue-900 transition-colors duration-150 bg-white border border-r-0 border-blue-900 focus:shadow-outline "
+                    >
+                      {i + 1}
+                    </button>
+                  </li>
+                ))}
+                <li>
+                  <button
+                    disabled={page === orders?.pages - 1}
+                    className="px-4 py-2 text-blue-900 transition-colors duration-150 bg-white border border-blue-900 rounded-r-lg focus:shadow-outline hover:bg-sky-100 disabled:opacity-50"
+                    onClick={() => setPage(page + 1)}
+                  >
+                    Next
+                  </button>
+                </li>
+              </ul>
+            </nav>
+          </div>
        
       </div>
     </div>

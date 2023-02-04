@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import Product from "../componenets/product";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProducts } from "../slices/productSlice";
@@ -7,7 +6,8 @@ import { QrReader } from "react-qr-reader";
 import Search from "../componenets/Search";
 import { resetClient } from "../slices/clientSlice";
 import { clearCart } from "../slices/cartSlice";
-import { fetchClientDetails } from "../slices/clientSlice";
+import Loader from "../componenets/Loader";
+import Message from "../componenets/Message";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -62,12 +62,11 @@ const Home = () => {
         </>
       ) : (
         <div className="flex flex-col items-center justify-center">
-          <h2>{data}</h2>
           <div className="w-full flex justify-between">
             <div className="mx-3 my-3">
               <button
                 onClick={() => setScanning(true)}
-                className="inline-flex justify-center rounded-md border border-transparent bg-green-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:green-700 focus:outline-none focus:ring-2  focus:ring-offset-2"
+                className="inline-flex justify-center rounded-md border border-transparent bg-blue-800 py-2 px-4 text-sm font-medium text-white shadow-sm hover:green-700 focus:outline-none focus:ring-2  focus:ring-offset-2"
               >
                 Start Scan
               </button>
@@ -76,7 +75,7 @@ const Home = () => {
             <div className="mx-3 my-3">
               <button
                 onClick={() => resteClientHandler()}
-                className="inline-flex justify-center rounded-md border border-transparent bg-green-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:green-700 focus:outline-none focus:ring-2  focus:ring-offset-2"
+                className="inline-flex justify-center rounded-md border border-transparent bg-blue-800 py-2 px-4 text-sm font-medium text-white shadow-sm hover:green-700 focus:outline-none focus:ring-2  focus:ring-offset-2"
               >
                 Reset Client
               </button>
@@ -84,7 +83,7 @@ const Home = () => {
             <div className="mx-3 my-3">
               <button
                 onClick={() => restOrderHandler()}
-                className="inline-flex justify-center rounded-md border border-transparent bg-green-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:green-700 focus:outline-none focus:ring-2  focus:ring-offset-2"
+                className="inline-flex justify-center rounded-md border border-transparent bg-blue-800 py-2 px-4 text-sm font-medium text-white shadow-sm hover:green-700 focus:outline-none focus:ring-2  focus:ring-offset-2"
               >
                 Reset Order
               </button>
@@ -98,7 +97,8 @@ const Home = () => {
               />
             </Search>
           </div>
-
+          {loading ? <Loader/> : null }
+          {error ? <Message>{error}</Message>: null}
           <div className="w-full grid bg-gray-300 sm:!grid-cols-2 sm:gap-1 md:grid-cols-3 md:gap-2 grid-cols-3 gap-3">
             {products.products?.map((product) => (
               <Product
@@ -110,7 +110,7 @@ const Home = () => {
               />
             ))}
           </div>
-          <div className="bg-white p-4 flex items-center flex-wrap text-2xl font-bold">
+          <div className="bg-white p-4 flex items-center flex-wrap text-sm font-bold">
             <nav>
               <ul className="inline-flex">
                 <li>

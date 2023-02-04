@@ -24,6 +24,10 @@ const Clients = () => {
     navigate(`/client/${id}`)
   }
 
+  const navigateBackHandler= ()=> {
+    navigate(-1);
+  }
+
 
 
   return ( 
@@ -33,6 +37,7 @@ const Clients = () => {
     <div className="flex flex-col mx-3">      
         <div className="flex justify-between">
         <button
+                onClick={()=> navigateBackHandler()}
                 className="ml-9 px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded  shadow-md
                         focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0
                         hover:bg-blue-700 hover:shadow-lg 
@@ -57,22 +62,22 @@ const Clients = () => {
         <div className="py-2 inline-block flex-1 ">
           <div className="w-full">
             <table className="w-full">
-              <thead className="border-b bg-green-300 border-green-500">
+              <thead className="border-b bg-blue-900 border-blue-500">
                 <tr>
                   <th                    
-                    className="text-md font-bold uppercase text-gray-900 px-3 py-4 text-left"
+                    className="text-md font-bold uppercase text-white px-3 py-4 text-left"
                   >
                     Name
                   </th>
                   <th
                     scope="col"
-                    className="text-md font-bold uppercase text-gray-900 px-3 py-4 text-left"
+                    className="text-md font-bold uppercase text-white px-3 py-4 text-left"
                   >
                     Phone
                   </th>
                   <th
                     scope="col"
-                    className="text-md font-bold uppercase  text-gray-900 px-3 py-4 text-left"
+                    className="text-md font-bold uppercase  text-white px-3 py-4 text-left"
                   >
                     Address
                   </th>

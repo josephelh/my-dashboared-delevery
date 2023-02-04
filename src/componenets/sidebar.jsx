@@ -1,5 +1,4 @@
 import React from "react";
-import logo from "../logo.svg";
 import { useState } from "react";
 import { HiChevronLeft, HiChevronRight } from "react-icons/hi";
 import { Link } from "react-router-dom";
@@ -20,7 +19,7 @@ const Sidebar = () => {
     <div
       className={`${
         openMenu ? "w-60 left-0 top-0 h-screen" : "w-1 "
-      } z-50  duration-300 fixed h-screen bg-sky-800 text-2xl`}
+      } z-50  duration-300 fixed h-screen bg-indigo-800 text-2xl`}
     >
       {openMenu ? (
         <HiChevronLeft

@@ -16,6 +16,7 @@ const Navbar = () => {
   const [open, setOpen] = useState(false);
   const client = useSelector((state) => state.clients.client);
   const cartItems = useSelector((state) => state.cart.cartItems);
+  const {name} = useSelector((state) => state.user.userLogin);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -33,12 +34,12 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className="w-full z-40 fixed top-0 left-0 flex flex-wrap items-center px-2 py-1 bg-sky-500 mb-3">
+      <nav className="w-full z-40 fixed top-0 left-0 flex flex-wrap items-center px-2 py-1 bg-indigo-900 mb-3">
         <div className="container px-4 mx-auto flex items-center justify-between">
           <div className="flex justify-between items-center lg:w-auto lg:static lg:block lg:justify-start">
-            <a className="text-sm font-bold leading-relaxed inline-block mr-4 py-2 whitespace-nowrap uppercase text-white">
+            <Link to='./' className="text-sm font-bold leading-relaxed inline-block mr-4 py-2 whitespace-nowrap uppercase text-white">
               SM Delevery
-            </a>
+            </Link>
           </div>
           <div className="flex ">
             <ul className="flex flex-row list-none mr-4">
@@ -76,9 +77,10 @@ const Navbar = () => {
               <li className="nav-item">
                 <div
                   onClick={() => setOpen(!open)}
-                  className="px-1 py-2 flex items-center text-4xl uppercase font-bold leading-snug text-cyan-900 hover:opacity-75"
+                  className="px-1 py-2 flex rounded-xl items-center text-4xl uppercase font-bold leading-snug text-white hover:opacity-75 over:bg-indigo-400 "
                 >
                   <HiUserCircle />
+                  <p className="mr-1 text-xs">{name}</p>
                 </div>
                 <div className={`${open ? "block" : "hidden"}`}>
                   <ul
