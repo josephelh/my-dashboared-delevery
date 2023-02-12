@@ -32,13 +32,14 @@ const Home = () => {
   }, [dispatch, page, keyword, data]);
 
   const handleScan = (data) => {
-    if (data) {
+    if (data !== "No result") {
       setData(data);      
       setScanning(false);
     } else if (error) {
       console.info(error);
     }
   };
+  console.log(data)
 
   const resteClientHandler = () => {
     dispatch(resetClient());
