@@ -63,6 +63,7 @@ const Home = () => {
       ) : (
         <div className="flex flex-col items-center justify-center">
           <div className="w-full flex justify-between">
+        <p>{data}</p>
             <div className="mx-3 my-3">
               <button
                 onClick={() => setScanning(true)}
